@@ -1,23 +1,33 @@
 /*
- * This script goes through your Gmail Inbox and finds recent emails where you
- * were the last respondent. It applies a nice label to them, so you can
- * see them in Priority Inbox or do something else.
+ * This script goes through your Gmail Inbox and finds recent emails sent
+ * to you where you are not the last respondent. These may be emails that
+ * are awaiting your reply. It applies a label to them, so you can search
+*  for them easily. 
  *
- * To remove and ignore an email thread, just remove the unrespondedLabel and
- * apply the ignoreLabel.
+ * To remove and ignore an email thread, just remove the email from inbox
+ * or remove the unrespondedLabel and apply the ignoreLabel.
  *
  * This is most effective when paired with a time-based script trigger.
  *
  * For installation instructions, read this blog post:
  * http://jonathan-kim.com/2013/Gmail-No-Response/
+ * 
+ * This script is based on and is nearly identical to:
+ * http://jonathan-kim.com/2013/Gmail-No-Response/
+ * which does the same but for messages that you sent but haven't been
+ * responded to. Thank you to @hijonathan for putting his work in 
+ * the public domain
+ * 
  */
 
 
 // Edit these to your liking.
-var unrespondedLabel = 'No Response',
-    ignoreLabel = 'Ignore No Response',
-    minDays = 5,
-    maxDays = 14;
+var searchLabel = 'inbox', // which label to look in, 
+                           // switch to 'important' to check priority only
+    unrespondedLabel = 'AR', // label for messages that may be awaiting response
+    ignoreLabel = 'Ignore AR', // label to use for messages for the script to ignore
+    minDays = 3, // minimum number of days of age email to look for
+    maxDays = 5; // maximum number of days to look at
 
 function main() {
   processUnresponded();
@@ -25,7 +35,7 @@ function main() {
 }
 
 function processUnresponded() {
-  var threads = GmailApp.search('is:sent from:me -in:chats older_than:' + minDays + 'd newer_than:' + maxDays + 'd'),
+  var threads = GmailApp.search('label:'+ searchLabel +' to:me -from:me -in:chats older_than:' + minDays + 'd newer_than:' + maxDays + 'd'),
       numUpdated = 0,
       minDaysAgo = new Date();
 
@@ -39,7 +49,7 @@ function processUnresponded() {
         lastFrom = lastMessage.getFrom(),
         lastMessageIsOld = lastMessage.getDate().getTime() < minDaysAgo.getTime();
 
-    if (isFromMe(lastFrom) && lastMessageIsOld && !threadHasLabel(thread, ignoreLabel)) {
+    if (!isFromMe(lastFrom) && lastMessageIsOld && !threadHasLabel(thread, ignoreLabel)) {
       markUnresponded(thread);
       numUpdated++;
     }

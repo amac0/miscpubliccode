@@ -2,7 +2,7 @@
  * This script goes through your Gmail Inbox and finds recent emails sent
  * to you where you are not the last respondent. These may be emails that
  * are awaiting your reply. It applies a label to them, so you can search
-*  for them easily. 
+ *  for them easily. 
  *
  * To remove and ignore an email thread, just remove the email from inbox
  * or remove the unrespondedLabel and apply the ignoreLabel.
@@ -10,7 +10,7 @@
  * This is most effective when paired with a time-based script trigger.
  *
  * For installation instructions, read this blog post:
- * http://jonathan-kim.com/2013/Gmail-No-Response/
+ * http://www.bricoleur.org/2014/08/label-emails-awaiting-response.html
  * 
  * This script is based on and is nearly identical to:
  * http://jonathan-kim.com/2013/Gmail-No-Response/
@@ -26,8 +26,8 @@ var searchLabel = 'inbox', // which label to look in,
                            // switch to 'important' to check priority only
     unrespondedLabel = 'AR', // label for messages that may be awaiting response
     ignoreLabel = 'Ignore AR', // label to use for messages for the script to ignore
-    minDays = 3, // minimum number of days of age email to look for
-    maxDays = 5; // maximum number of days to look at
+    minDays = 5, // minimum number of days of age email to look for
+    maxDays = 14; // maximum number of days to look at
 
 function main() {
   processUnresponded();

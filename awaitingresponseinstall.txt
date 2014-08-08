@@ -2,6 +2,6 @@
 2. Replace the template code in the blank project with the Awaiting Response code at https://raw.githubusercontent.com/amac0/miscpubliccode/master/awaitingresponse.js
 3. If desired, change the label to look in, the text for the label where messages will be placed and the age range to search. These are all at the top of the script and the comments will help you decide what to change.
 4. Save the script by choosing "File|Save" from the Google Script menu.
-4. Run the script by choosing "Run|main" from the Google Script menu. Go look at your inbox and make sure it worked.
-5. If desired, set the script to run every day by choosing "Resources|Current project's triggers" from the Google Script menu.
+5. Run the script by choosing "Run|main" from the Google Script menu. Go look at your inbox and make sure it worked.
+6. If desired, set the script to run every day by choosing "Resources|Current project's triggers" from the Google Script menu.
 

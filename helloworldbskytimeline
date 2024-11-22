@@ -1,0 +1,39 @@
+#a short script designed as a "hello world" for bluesky custom feeds
+#returns one post, specified in POST_URI
+import json
+
+#These may change based on your setup
+POST_URI = 'at://did:plc:dlmaizgntvbcpxfthstaokq5/app.bsky.feed.post/3lbdayzydis24' #this is the post I used
+SERVICE_DOMAIN = 'YOURDOMAIN.COM' #replace
+PATH_VAR = "rawPath" #this may be different in your setup
+
+def lambda_handler(event, context):
+    path = event.get(PATH_VAR)
+    #this specifies where the feed is
+    if (path == '/.well-known/did.json'):
+      return {
+            'statusCode': 200,
+            'body': json.dumps({
+                '@context': ['https://www.w3.org/ns/did/v1'],
+                'id': 'did:web:'+SERVICE_DOMAIN,
+                'service': [
+                    {
+                        'id': '#bsky_fg',
+                        'type': 'BskyFeedGenerator',
+                        'serviceEndpoint': 'https://'+SERVICE_DOMAIN+'/'
+                    }
+                ]
+            }, indent=2)
+      }
+    #this returns the feed
+    if (path == '/xrpc/app.bsky.feed.getFeedSkeleton'):
+       return {
+            'statusCode': 200,
+            'headers': {"Content-Type": "application/json; charset=UTF-8"},
+            'body': json.dumps({'feed':[{"post": POST_URI}]}, indent=2)
+      } 
+    else:
+        return {
+            'statusCode': 404, 
+            'body': 'Nothing to see here'
+            }
